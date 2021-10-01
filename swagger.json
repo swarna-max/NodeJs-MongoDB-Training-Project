@@ -1,0 +1,434 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Book Library API",
+        "version": "1.0.0",
+        "title": "Books Library API"
+    },
+    "schemes": ["http"],
+    "host": "localhost:3000",
+    "basePath": "/",
+    "paths" : {
+        "/user/signUp" : {
+            "post" : {
+                "summary" : "SignUp User",
+                "description": "To create new user",
+                "produces": ["application/json"],
+                "consumes": ["application/json"],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Create new user",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "username" : {
+                                    "type": "string",
+                                    "required":true
+                                }, 
+                                "password" : {
+                                    "type": "string",
+                                    "required":true
+                                
+                                },
+                                "email" : {
+                                    "type": "string",
+                                    "required":true
+                                
+                                } 
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful signup",
+                        "schema": {
+                            "type": "array"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid signup"
+                    }
+                }
+            }
+        },
+        "/user/signIn" : {
+            "post" : {
+                "summary" : "Signin User",
+                "description": "To signin as user",
+                "produces": ["application/json"],
+                "consumes": ["application/json"],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "SignIn user",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "username" : {
+                                    "type": "string",
+                                    "required":true
+                                }, 
+                                "password" : {
+                                    "type": "string",
+                                    "required":true
+                                
+                                } 
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful signin",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/UserSuccessResponse"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid signin",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/listUsers" : {
+            "get" : {
+                "summary" : "Get all users",
+                "description": "Get all users",
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "x-access-token",
+                        "in": "header",
+                        "description": "Token get from while signin as user",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful user lists",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/UserSuccessResponse"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "No User List"
+                       
+                    }
+                }
+            }
+        },
+        "/book/create" : {
+            "post" : {
+                "summary" : "Create new book",
+                "description": "Create new book",
+                "produces": ["multipart/form-data"],
+                "parameters": [
+                    {
+                        "name": "x-access-token",
+                        "in": "header",
+                        "description": "Token get from while signin as user",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "name",
+                        "in": "formData",
+                        "description": "name of book",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "book",
+                        "in": "formData",
+                        "description": "file of book",
+                        "required": true,
+                        "type": "file"
+                    },
+                    {
+                        "name": "author",
+                        "in": "formData",
+                        "description": "author name of book",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "description",
+                        "in": "formData",
+                        "description": "book description",
+                        "type": "string"
+                    }
+                   
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful create",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/SuccessResponse"
+                            }
+                           
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid create"
+                    }
+                }
+            }
+        },
+        "/book/update/{id}" : {
+            "put" : {
+                "summary" : "Update the book",
+                "description": "Update the book",
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "x-access-token",
+                        "in": "header",
+                        "description": "Token get from while signin as user",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id for book",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "book details",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "name" : {
+                                    "type": "string"
+                                },
+                                "description" : {
+                                    "type": "string"
+                                },
+                                "author" : {
+                                    "type": "string"
+                                }   
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful update",
+                        "schema": {
+                            "type": "array"
+                           
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid update"
+                    }
+                }
+            }
+        },
+        "/book/delete/{id}" : {
+            "delete" : {
+                "summary" : "Delete the book",
+                "description": "Delete the book",
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "x-access-token",
+                        "in": "header",
+                        "description": "Token get from while signin as user",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id for book",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful delete",
+                        "schema": {
+                            "type": "array"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid delete"
+                    }
+                }
+            }
+        },
+        "/book/listBooks" : {
+            "get" : {
+                "summary" : "Get all books",
+                "description": "Get all books",
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "x-access-token",
+                        "in": "header",
+                        "description": "Token get from while signin as user",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful book lists",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/SuccessResponse"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "No book List",
+                        "items": {
+                            "$ref": "#/definitions/InvalidResponse"
+                        }
+                       
+                    }
+                }
+            }
+        },
+        "/book/listBooks/{id}" : {
+            "get" : {
+                "summary" : "Get specific book",
+                "description": "Get specific book",
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "x-access-token",
+                        "in": "header",
+                        "description": "Token get from while signin as user",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id for book",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful book lists",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/SuccessResponse"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "No Book List"
+                       
+                    }
+                }
+            }
+        },
+        "/booksByUsername/{user}" : {
+            "get" : {
+                "summary" : "Get user and books details based on username",
+                "description": "Get user and books details for specific user by joining field of username in users collection and bookAuthor in books collection",
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "x-access-token",
+                        "in": "header",
+                        "description": "Token get from while signin as user",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "description": "username for created user",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful user and book lists",
+                        "schema": {
+                            "type": "array"
+                        }
+                    },
+                    "400": {
+                        "description": "No List Found"
+                       
+                    }
+                }
+            }
+        }
+    }, 
+    "definitions": {
+        "SuccessResponse": {
+            "type": "object",
+            "properties": {
+                "bookName": {
+                    "type": "string"
+                },
+                "bookPath": {
+                    "type": "string"
+                },
+                "bookAuthor": {
+                    "type": "string"
+                },
+                "_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "UserSuccessResponse": {
+            "type": "object",
+            "properties": {
+                "_id": {
+                     "type": "integer"
+                },
+                "username": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                }
+            }
+        },
+        "InvalidResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            }
+
+        }
+    }
+}
