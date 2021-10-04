@@ -36,7 +36,7 @@ app.post("/create",[authJwt.verifyToken], async (req, res) => {
         
         const isFileValid = (file) => {
             const type = file.type.split("/").pop();
-            const validTypes = ["jpg", "jpeg", "png", "pdf"];
+            const validTypes = ["jpg", "jpeg", "png", "pdf" , "docx", "txt" ];
             if (validTypes.indexOf(type) === -1) {
               return false;
             }
@@ -50,7 +50,7 @@ app.post("/create",[authJwt.verifyToken], async (req, res) => {
 
         //move file to folder
         var filePath = files.book.path;
-        var newpath = pathRoute.join('./uploads/') + files.book.name;
+        var newpath = pathRoute.join('./uploads/') + files.book.name + new Date().getTime();
         fs.rename(filePath, newpath, function (err) {
             if (err) res.status(400).json({message: "File not moved to folder"});
             else console.log('File moved to folder');
