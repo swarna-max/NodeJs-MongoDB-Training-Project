@@ -216,7 +216,6 @@
                         "in": "body",
                         "name": "body",
                         "description": "book details",
-                        "required": true,
                         "schema": {
                             "type": "object",
                             "properties": {
@@ -353,7 +352,7 @@
                 }
             }
         },
-        "/booksByUsername/{user}" : {
+        "/user/booksByUsername/{user}" : {
             "get" : {
                 "summary" : "Get user and books details based on username",
                 "description": "Get user and books details for specific user by joining field of username in users collection and bookAuthor in books collection",
@@ -394,16 +393,20 @@
             "type": "object",
             "properties": {
                 "bookName": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "My Book"
                 },
                 "bookPath": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Path get from book file"
                 },
                 "bookAuthor": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Author name of book"
                 },
                 "_id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "description": "Auto generated id"
                 }
             }
         },
@@ -411,13 +414,16 @@
             "type": "object",
             "properties": {
                 "_id": {
-                     "type": "integer"
+                     "type": "integer",
+                     "description": "Auto generated id"
                 },
                 "username": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "UserName"
                 },
                 "email": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "userName@gmail.com"
                 }
             }
         },

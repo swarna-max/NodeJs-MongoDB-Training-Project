@@ -6,7 +6,7 @@ const chalk = require('chalk');
 const swaggerUI = require("swagger-ui-express");
 const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerJson = require('./swagger.json');
-const authJwt = require("./authJwt");
+const authJwt = require("./middleware/authJwt");
 const PORT = process.env.PORT || 3000;
 
 
@@ -42,34 +42,4 @@ app.listen(3000, () => {
     console.log(` ${chalk.green('Listening Port ' +PORT+ ' running success')}`);
 });
 
-app.get("/booksByUsername/:user",[authJwt.verifyToken], async (req, res) => {
 
-  db.collection('users').aggregate([
-      { $lookup:
-        {
-          from: 'books',
-          let: { username: "$username" },
-          pipeline: [
-            {
-              $match: {
-                $expr: {
-                  $and: [
-                    { $eq: ["$bookAuthor", "$$username"] },
-                    { $eq: ["$bookAuthor", req.params.user] },
-                  ],
-                },
-              },
-            },
-          ],
-          as: 'bookdetails'
-        }
-      },
-      {
-        $unwind: "$bookdetails",
-      },
-    ]).toArray(function(err, list) {
-      if (list == "") return res.status(404).send({message:"No book created by this user"});
-      else res.status(200).send(list);
-      db.close();
-    });
-});
